@@ -1,38 +1,70 @@
 -- choice CRUDs
 
 -- create choice 
-create proc add_choice @choice_text varchar(100)
+alter proc add_choice @choice_text varchar(100)
 as
 begin
+begin try
+	begin transaction
 	insert into choice
 	values(@choice_text);
+	commit
+end try
+begin catch
+	if @@TRANCOUNT > 0
+		rollback;
+end catch
 end
 
 --update choice
-create proc update_choice @choice_id int, @new_text varchar(100)
+alter proc update_choice @choice_id int, @new_text varchar(100)
 as
 begin
+begin try
+	begin transaction
 	update choice
 	set text = @new_text
 	where ch_id = @choice_id
+	commit
+end try
+begin catch
+	if @@TRANCOUNT > 0
+		rollback;
+end catch
 end
 
 --read choice
-create proc get_choice @choice_id int
+alter proc get_choice @choice_id int
 as
 begin
+begin try
+	begin transaction
 	select *
 	from choice
 	where ch_id = @choice_id
+	commit
+end try
+begin catch
+	if @@TRANCOUNT > 0
+		rollback;
+end catch
 end
 
 --delete choice
-create proc delete_choice @choice_id int
+alter proc delete_choice @choice_id int
 as
 begin
+begin try
+	begin transaction
 	delete
 	from choice
 	where ch_id = @choice_id
+	commit
+end try
+begin catch
+	if @@TRANCOUNT > 0
+		rollback;
+end catch
 end 
 
 --exec add_choice 'a and c'

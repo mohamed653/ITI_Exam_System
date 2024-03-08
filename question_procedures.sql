@@ -117,6 +117,6 @@ begin catch
 end catch
 end
 
-exec get_question_with_choices 3
+--exec get_question_with_choices 3
 
 

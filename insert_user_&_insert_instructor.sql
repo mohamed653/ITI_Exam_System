@@ -50,3 +50,47 @@ GO
 
 --InsertInstructor 'insUsername', '0123456', 'instructor', 'Kareem', 'Waleed', '4-4-2013', 3
 
+--Proc to get instructor by id
+CREATE PROCEDURE GetInstructor ( @insID INT)
+AS 
+BEGIN TRY 
+	BEGIN TRANSACTION
+		SELECT fname + ' ' + lname as 'Instructor fullname'
+		FROM [user]
+		WHERE u_id = @insID
+	COMMIT
+END TRY
+BEGIN CATCH
+	ROLLBACK
+END CATCH
+
+--GetInstructor 22
+
+
+--Proc to get all instructors names
+CREATE PROCEDURE GetAllInstructors
+AS
+BEGIN TRY
+	BEGIN TRANSACTION
+		SELECT fname + ' ' + lname as 'Instructor fullname'
+		FROM [user]
+	COMMIT
+END TRY
+BEGIN CATCH
+	ROLLBACK
+END CATCH
+
+--GetAllInstructors
+
+--Proc to Delete an instructor from instructor tableS after deleting from users table
+CREATE PROCEDURE DeleteInstructor ( @insID INT)
+AS
+BEGIN TRY
+	BEGIN TRANSACTION
+		DELETE FROM [user] 
+		WHERE u_id = @insID
+	COMMIT
+END TRY
+BEGIN CATCH
+	ROLLBACK
+END CATCH

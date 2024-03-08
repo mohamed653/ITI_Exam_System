@@ -7,6 +7,8 @@ q_id int
 alter proc generate_exam @crs_id int, @exam_date date, @duration time(0)
 as
 begin
+begin try 
+	begin transaction
 	declare @tfCount int= (select COUNT(q_id) from question where type='TF'); 
 	declare @MCQCount int= (select COUNT(q_id) from question where type='MCQ');
 	declare @total_score int;
@@ -38,6 +40,14 @@ begin
 	exec insert_new_exam @duration, @exam_date, @total_score, @crs_id, @examQuestions;
 
 	DROP TABLE questions_table;
+	commit
+end try
+
+begin catch
+	if @@TRANCOUNT > 0
+		rollback;
+end catch
+
 end
 
 --questions types random count
@@ -56,6 +66,30 @@ begin
 	else if @mcq < 5 and @tf > 5
 		set @tf = (SELECT MIN(val) FROM (VALUES (10 - @mcq), (@tf)) AS AllValues(val));
 end
+
+-- exam model answer
+alter proc get_exam_answers @exam_id int
+as
+begin
+begin try
+	begin transaction
+	select q.q_id, answer
+	from exam e
+	join exam_question eq on e.ex_id = eq.ex_id
+	join question q on eq.q_id = q.q_id
+	where e.ex_id = @exam_id;
+	commit
+end try
+
+begin catch
+	if @@TRANCOUNT > 0
+		rollback;
+end catch
+
+end
+
+exec generate_exam 1, '2024-03-07', '02:00:00'
+exec get_exam_answers 5;
 
 --save exam
 alter proc insert_new_exam @duration time(0), @exam_date date, @total_score int, @crs_id int, @questionsTable exam_questions_ids readonly
@@ -82,27 +116,8 @@ begin catch
 end catch
 end	
 
--- exam model answer
-alter proc get_exam_answers @exam_id int
-as
-begin
-	select q.q_id, answer
-	from exam e
-	join exam_question eq on e.ex_id = eq.ex_id
-	join question q on eq.q_id = q.q_id
-	where e.ex_id = @exam_id;
-end
-
-exec generate_exam 1, '2024-03-07', '02:00:00'
-exec get_exam_answers 5;
---declare @a int = 3;
---declare @b int = 3;
-
---exec mcq_tf_count @a output, @b output;
---select @a, @b;
-
 --delete exam
-create proc delete_exam @exam_id int
+alter proc delete_exam @exam_id int
 as
 begin
 begin try
@@ -120,6 +135,7 @@ end try
 begin catch
 	if @@TRANCOUNT > 0
 		rollback;
+	select 'error happened';
 end catch
 end	
 
@@ -185,6 +201,8 @@ begin catch
 end catch
 end	
 
-
-
-
+--generate_exam 1, '2024-03-06', '01:30:00'
+--get_exam 7
+--delete_exam 7
+--get_question_with_choices 23
+--delete_question 23

@@ -95,4 +95,41 @@ BEGIN CATCH
 	ROLLBACK
 END CATCH
 
---
+
+--Proc to update the instructor data
+CREATE PROCEDURE UpdateInstructor
+(   @insID INT,
+	@userName VARCHAR(20),
+    @password VARCHAR(50),
+    @fname NVARCHAR(50),
+    @lname NVARCHAR(50),
+	@hireDate Date,
+	@deptID INT
+)
+AS
+BEGIN TRY
+	BEGIN TRANSACTION
+	UPDATE [user]
+	SET 
+		username = @userName,
+		password = @password,
+		fname = @fname,
+		lname = @lname
+	WHERE
+		u_id = @insID
+
+	UPDATE instructor
+	SET 
+		hire_date = @hireDate,
+		dept_id = @deptID
+	WHERE
+		ins_id = @insID
+
+	COMMIT
+END TRY
+BEGIN CATCH
+	ROLLBACK
+END CATCH
+
+
+--UpdateInstructor 10, 'sayedwael', '0147852', 'Sayed', 'Wael', '8-9-2010', 1

@@ -201,6 +201,24 @@ begin catch
 end catch
 end	
 
+create proc get_student_exam_answers @student_id int, @exam_id int
+as
+begin
+begin try
+	begin transaction
+		select se.q_id, se.std_answer as student_answer
+		from std_exam se
+		where ex_id = @exam_id and std_id = @student_id
+	commit
+end try
+
+begin catch
+	if @@TRANCOUNT > 0
+		rollback;
+end catch
+end
+
+exec get_student_exam_answers 1, 1
 --generate_exam 1, '2024-03-06', '01:30:00'
 --get_exam 7
 --delete_exam 7

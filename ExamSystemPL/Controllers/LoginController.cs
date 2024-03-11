@@ -7,6 +7,7 @@ namespace ExamSystemPL.Controllers
         public IActionResult Index()
         {
             return View();
+            /// kjjbasc;jknbas;kjncj;
         }
     }
 }

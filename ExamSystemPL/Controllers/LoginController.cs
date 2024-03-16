@@ -16,7 +16,7 @@ namespace ExamSystemPL.Controllers
         public IActionResult login()
         {
             return View();
-            /// kjjbasc;jknbas;kjncj;
+         
         }
         [HttpPost]
         public IActionResult login(LoginVM v1)

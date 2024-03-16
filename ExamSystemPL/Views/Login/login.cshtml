@@ -1,0 +1,82 @@
+﻿@using BLL.ViewModels
+@{
+    ViewData["Title"] = "login";
+    Layout = null;
+}
+@model LoginVM 
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ExamSystemPL.styles.css" asp-append-version="true" />
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-form {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .logo img {
+                width: 100px;
+                height: auto;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="login-form">
+        <div class="logo">
+            <!-- Place your logo here -->
+            <img src="path/to/your/logo.png" alt="Logo">
+        </div>
+        <form method="post" asp-action="login">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">User Name</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" asp-for="usename">
+                <span asp-validation-for="usename"></span>
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label" asp-for="password">Password</label>
+                <input  class="form-control" id="exampleInputPassword1" asp-for="password">
+                <span asp-validation-for="password"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <div class="mt-3 text-center">
+            <!-- Add your buttons here -->
+            <button class="btn btn-info">Login as student</button>
+            <button class="btn btn-success">login as instructor</button>
+        </div>
+    </div>
+
+</body>
+</html>
+

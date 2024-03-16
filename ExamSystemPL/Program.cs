@@ -11,6 +11,8 @@ builder.Services.AddDbContext<ITIContext>(options =>
 
 
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<iLoginRepositry, LoginRepository>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
